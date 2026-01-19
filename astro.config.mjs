@@ -92,7 +92,7 @@ export default defineConfig({
       noExternal: [/^@roadmapsh\/editor.*$/],
     },
     server: {
-      allowedHosts: true,
+      allowedHosts: ['roadmap.sh', 'port3k.kamranahmed.info'],
     },
   },
 });
