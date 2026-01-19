@@ -1,0 +1,246 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SimplePageHeader from '../components/SimplePageHeader.astro';
+import { Badge } from '../components/Badge';
+import { listOfficialRoadmaps } from '../queries/official-roadmap';
+import { listOfficialGuides } from '../queries/official-guide';
+import { getAllVideos } from '../lib/video';
+
+const title = 'UI Playground';
+const description = 'A playground to test and demonstrate UI components and styles with real content.';
+
+// Fetch real content
+const roadmaps = await listOfficialRoadmaps();
+const guides = await listOfficialGuides();
+const videos = await getAllVideos();
+
+// Slice data for display
+const displayRoadmaps = roadmaps.slice(0, 3);
+const displayGuides = guides.slice(0, 3);
+const displayVideos = videos.slice(0, 3);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  permalink="/ui-playground"
+>
+  <SimplePageHeader title={title} description={description} />
+
+  <div class="container py-10 space-y-12">
+    <!-- Real Content: Roadmaps -->
+    <section>
+      <div class="flex items-center justify-between mb-4 pb-2 border-b">
+        <h2 class="text-2xl font-bold">Real Content: Roadmaps</h2>
+        <Badge variant="blue" text={`${roadmaps.length} Items`} />
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {displayRoadmaps.map((roadmap) => (
+          <div class="border rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xl font-bold">{roadmap.title.card}</h3>
+              <Badge variant={roadmap.type === 'role' ? 'blue' : 'yellow'} text={roadmap.type} />
+            </div>
+            <p class="text-gray-600 mb-4 flex-grow">{roadmap.description}</p>
+            <a href={`/${roadmap.slug}`} class="text-blue-600 hover:underline font-medium mt-auto">View Roadmap &rarr;</a>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Real Content: Guides -->
+    <section>
+      <div class="flex items-center justify-between mb-4 pb-2 border-b">
+        <h2 class="text-2xl font-bold">Real Content: Guides</h2>
+        <Badge variant="green" text={`${guides.length} Items`} />
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {displayGuides.map((guide) => (
+          <div class="border rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+            <h3 class="text-xl font-bold mb-2">{guide.title}</h3>
+            <p class="text-gray-600 mb-4 flex-grow line-clamp-3">{guide.description}</p>
+            <a href={guide.slug} class="text-blue-600 hover:underline font-medium mt-auto">Read Guide &rarr;</a>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Real Content: Videos -->
+    <section>
+      <div class="flex items-center justify-between mb-4 pb-2 border-b">
+        <h2 class="text-2xl font-bold">Real Content: Videos</h2>
+         <Badge variant="red" text={`${videos.length} Items`} />
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {displayVideos.map((video) => (
+          <div class="border rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+             <div class="relative aspect-video bg-gray-900">
+                <img src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`} alt={video.title} class="w-full h-full object-cover opacity-80" />
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <div class="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent ml-1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 flex flex-col flex-grow">
+              <h3 class="text-lg font-bold mb-2 line-clamp-2">{video.title}</h3>
+              <p class="text-gray-600 text-sm mb-4 flex-grow">{video.description}</p>
+              <a href={video.url} target="_blank" rel="noopener noreferrer" class="text-red-600 hover:underline font-medium mt-auto">Watch Video &rarr;</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <div class="border-t-2 border-gray-100 my-10"></div>
+
+    <!-- Typography Section -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4 pb-2 border-b">Typography</h2>
+      <div class="space-y-4">
+        <div>
+          <h1 class="text-4xl font-bold">Heading 1</h1>
+          <p class="text-sm text-gray-500">text-4xl font-bold</p>
+        </div>
+        <div>
+          <h2 class="text-3xl font-bold">Heading 2</h2>
+          <p class="text-sm text-gray-500">text-3xl font-bold</p>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold">Heading 3</h3>
+          <p class="text-sm text-gray-500">text-2xl font-bold</p>
+        </div>
+        <div>
+          <h4 class="text-xl font-bold">Heading 4</h4>
+          <p class="text-sm text-gray-500">text-xl font-bold</p>
+        </div>
+        <div>
+          <p class="text-base text-gray-700">
+            Body text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+          <p class="text-sm text-gray-500">text-base text-gray-700</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-600">
+            Small text. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </p>
+          <p class="text-sm text-gray-500">text-sm text-gray-600</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buttons Section -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4 pb-2 border-b">Buttons</h2>
+      <div class="flex flex-wrap gap-4">
+        <button class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors">
+          Primary Button
+        </button>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+          Blue Button
+        </button>
+        <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors">
+          Secondary Button
+        </button>
+        <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+          Danger Button
+        </button>
+        <button class="bg-gray-100 text-gray-500 px-4 py-2 rounded-md cursor-not-allowed" disabled>
+          Disabled Button
+        </button>
+      </div>
+    </section>
+
+    <!-- Badges Section -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4 pb-2 border-b">Badges</h2>
+      <div class="flex flex-wrap gap-4">
+        <Badge variant="blue" text="Blue Badge" />
+        <Badge variant="green" text="Green Badge" />
+        <Badge variant="red" text="Red Badge" />
+        <Badge variant="yellow" text="Yellow Badge" />
+        <Badge variant="grey" text="Grey Badge" />
+        <Badge variant="white" text="White Badge" />
+      </div>
+    </section>
+
+    <!-- Cards Section -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4 pb-2 border-b">Cards</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Simple Card -->
+        <div class="border rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
+          <h3 class="text-xl font-bold mb-2">Simple Card</h3>
+          <p class="text-gray-600 mb-4">This is a simple card component with a title, description, and a link.</p>
+          <a href="#" class="text-blue-600 hover:underline font-medium">Read more &rarr;</a>
+        </div>
+
+        <!-- Card with Image Placeholder -->
+        <div class="border rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
+          <div class="h-32 bg-gray-200 flex items-center justify-center text-gray-400">
+            Image Placeholder
+          </div>
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xl font-bold">Project Card</h3>
+              <Badge variant="green" text="Active" />
+            </div>
+            <p class="text-gray-600 mb-4">A card suitable for displaying project details or blog posts.</p>
+            <button class="w-full bg-black text-white px-4 py-2 rounded-md text-sm hover:bg-gray-800 transition-colors">
+              View Details
+            </button>
+          </div>
+        </div>
+
+        <!-- Featured Card -->
+        <div class="border border-blue-200 bg-blue-50 rounded-lg p-6 relative">
+          <div class="absolute top-4 right-4">
+             <Badge variant="blue" text="Featured" />
+          </div>
+          <h3 class="text-xl font-bold mb-2 text-blue-900">Featured Content</h3>
+          <p class="text-blue-800 mb-4">This card uses a colored background to highlight important content.</p>
+          <ul class="list-disc list-inside text-blue-800 space-y-1 mb-4">
+            <li>Benefit one</li>
+            <li>Benefit two</li>
+            <li>Benefit three</li>
+          </ul>
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition-colors shadow-sm">
+            Call to Action
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form Elements Section -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4 pb-2 border-b">Form Elements</h2>
+      <div class="max-w-md space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+          <input type="email" placeholder="you@example.com" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Select Option</label>
+          <select class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+            <option>Option 1</option>
+            <option>Option 2</option>
+            <option>Option 3</option>
+          </select>
+        </div>
+
+        <div>
+           <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+           <textarea rows="3" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+        </div>
+
+        <div class="flex items-center">
+          <input id="checkbox" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+          <label for="checkbox" class="ml-2 block text-sm text-gray-900">
+            I agree to the <a href="#" class="text-blue-600 hover:underline">terms and conditions</a>
+          </label>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
