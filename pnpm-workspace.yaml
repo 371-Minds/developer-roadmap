@@ -1,2 +1,3 @@
 packages:
   - packages/*
+  - dummy_editor_package

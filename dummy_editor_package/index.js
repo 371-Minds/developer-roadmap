@@ -19,9 +19,18 @@ export const Editor = React.forwardRef((props, ref) => {
 });
 
 export const generateAIRoadmapFromText = () => ({ nodes: [], edges: [] });
+/**
+ * Render a flow as an SVG element.
+ *
+ * Note: In server-side rendering (SSR) environments where `document` is not
+ * available (e.g. Astro SSR), this function will always return `null`.
+ * Callers must handle the `null` case when using this function in SSR.
+ */
 export const renderFlowJSON = () => {
-     if (typeof document !== 'undefined') {
-        return document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+     if (typeof document === 'undefined') {
+        return null;
      }
-     return null;
+     // In browser environments, return an actual SVGElement as per the
+     // declared TypeScript type (SVGElement | null).
+     return document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 };

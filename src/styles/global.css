@@ -1,4 +1,19 @@
 @import 'tailwindcss';
+/*
+ * The @roadmapsh/editor stylesheet import is intentionally disabled in this build.
+ * - In environments where the @roadmapsh/editor package is available and editor-
+ *   related components (Renderer, ReadonlyEditor, Editor) are actually used,
+ *   uncomment the line below to restore the default editor styling:
+ *
+ *   @import '@roadmapsh/editor/style.css';
+ *
+ * - In dummy/development setups where the package is not present or the editor
+ *   is not rendered, keeping this commented avoids a failing import while the
+ *   rest of the application styles continue to load normally.
+ *
+ * If a dummy @roadmapsh/editor package is introduced, it should provide a
+ * minimal style.css file so this import can safely be enabled.
+ */
 /* @import '@roadmapsh/editor/style.css'; */
 
 @config '../../tailwind.config.cjs';
