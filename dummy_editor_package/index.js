@@ -21,7 +21,7 @@ export const Editor = React.forwardRef((props, ref) => {
 export const generateAIRoadmapFromText = () => ({ nodes: [], edges: [] });
 export const renderFlowJSON = () => {
      if (typeof document !== 'undefined') {
-        return document.createElement('div');
+        return document.createElementNS('http://www.w3.org/2000/svg', 'svg');
      }
      return null;
 };
